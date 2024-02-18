@@ -1,15 +1,16 @@
-import TwoSumUtil from './twoSumUtil/TwoSumUtil'
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import './twoSumstyle/TwoSum.css'; // Import CSS file for styling
 
-export default function TwoSum(){
-    function findTwoSum(nums, target){
+export default function TwoSum() {
+    function findTwoSum(nums, target) {
         let left = 0;
-        let right = nums.length;
-        right = right - 1;
-        console.log("this is nums.length", nums.length)
-        console.log("this is left, right", left, right);
+        let right = nums.length - 1;
         while (left < right) {
             const sum = nums[left] + nums[right];
+            setTimeout(() => {
+                setLeft(left);
+                setRight(right);
+            }, 1000);
             if (sum === target) {
                 return [left, right];
             } else if (sum < target) {
@@ -18,17 +19,19 @@ export default function TwoSum(){
                 right--;
             }
         }
-
         return [];
     };
 
     const [nums, setNums] = useState([]);
     const [target, setTarget] = useState(0);
+    const [left, setLeft] = useState(-1);
+    const [right, setRight] = useState(-1);
     const result = findTwoSum(nums, target);
-    console.log("result", result)
+
     const handleInputChange = (e) => {
         const input = e.target.value;
         const parts = input.split(',');
+
         const newNums = parts.map(part => {
             const trimmedPart = part.trim();
             return !isNaN(trimmedPart) && trimmedPart !== '' ? parseInt(trimmedPart) : null;
@@ -43,20 +46,25 @@ export default function TwoSum(){
 
     return (
         <div>
-            <div>
-                <h1>ths is twoSum visualization</h1>
-                <h2>Enter Array and Target</h2>
-                {Array.isArray(nums) && nums.map((num, index) => (
+
+            {nums.map((num, index) => (
+                <div key={index} className="pointer" style={{ position: 'relative' }}>
                     <input
-                        key={index}
                         type="number"
                         value={num}
-                        readOnly
+                        onChange={(e) => {
+                            const newNums = [...nums];
+                            newNums[index] = parseInt(e.target.value) || 0;
+                            setNums(newNums);
+                        }}
                         style={{ margin: '0 5px' }}
                     />
-                ))}
-            </div>
-
+                    {index === left && <div className="arrow arrow-left"></div>}
+                    {index === right && <div className="arrow arrow-right"></div>}
+                </div>
+            ))}
+                        <h1>This is twoSum visualization</h1>
+            <h2>Enter Array and Target</h2>
             <input
                 type="text"
                 placeholder="Enter array of numbers"
@@ -69,22 +77,7 @@ export default function TwoSum(){
                 onChange={handleTargetChange}
             />
             <div>
-            <h3>Result:</h3>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    {console.log(result.length)}
-                    {result.length > 0 ? 
-                        (
-                            result.map((num, index) => (
-                            <div key={index} style={{ position: 'relative', margin: '0 5px' }}>
-                                {console.log(num, index)}
-                                {index === result[0]}
-                                {index === result[1]}
-                                <input type="number" value={num} readOnly />
-                            </div>
-                        ))
-                        ) : (<div></div>)}
-                </div>
-
+                <h3>Result:</h3>
                 {result.length > 0 ? (
                     <p>Indices: {result.join(', ')}</p>
                 ) : (
@@ -92,5 +85,5 @@ export default function TwoSum(){
                 )}
             </div>
         </div>
-    )
+    );
 }
