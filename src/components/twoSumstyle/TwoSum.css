@@ -1,26 +1,27 @@
 .pointer {
     position: relative;
-    display: inline-block; /* Ensure the pointer divs are inline */
-    margin: 0 5px; /* Add margin for spacing */
+    display: inline-block;
+    margin: 0 5px;
 }
 
 .arrow {
     position: absolute;
-    bottom: -10px; /* Position the arrows under the boxes */
+    bottom: -15px; /* Adjust position to center under the boxes */
     width: 0;
     height: 0;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
+    z-index: 1; /* Set z-index to ensure arrows are displayed above input boxes */
 }
 
 .arrow-left {
+    left: 50%;
+    transform: translateX(-50%);
     border-bottom: 5px solid #f00; /* Red color for left arrow */
-    left: 50%; /* Position in the middle of the box */
-    transform: translateX(-50%); /* Center the arrow horizontally */
 }
 
 .arrow-right {
+    right: 50%;
+    transform: translateX(50%);
     border-bottom: 5px solid #00f; /* Blue color for right arrow */
-    right: 50%; /* Position in the middle of the box */
-    transform: translateX(50%); /* Center the arrow horizontally */
 }
